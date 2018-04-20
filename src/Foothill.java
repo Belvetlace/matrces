@@ -14,8 +14,7 @@ public class Foothill
     {
         // 100000 x 100000 filled with 0
         int k;
-        SparseMat<Double> mat
-                = new SparseMat<Double>(MAT_SIZE, MAT_SIZE, 0.);
+        SparseMat<Double> mat = new SparseMat<Double>(MAT_SIZE, MAT_SIZE, 0.);
 
         // test mutators
         for (k = 0; k < 10; k++)
