@@ -134,7 +134,13 @@ public class SparseMat<E> implements Cloneable
     // (leaves the matrix size unchanged).
     public void clear()
     {
-        set(numRows,numCols,defaultVal);
+        Iterator<MatNode> iter;
+        for(int i = 0; i < rows.get(i).size(); i++){
+            iter = rows.get(i).iterator();
+            while(iter.hasNext()){
+                iter.next().setData(defaultVal);
+            }
+        }
     }
 
     @Override
@@ -164,6 +170,11 @@ public class SparseMat<E> implements Cloneable
         E getData()
         {
             return data;
+        }
+
+        void setData(E data)
+        {
+            this.data = data;
         }
 
         int getCol()
