@@ -1,11 +1,5 @@
 // CIS 1C Assignment #2 
-// Instructor Solution Featuring clone()
 
-// client -----------------------------------------------------
-import cs_1c.*;
-import java.util.*;
-
-//------------------------------------------------------
 public class Foothill
 {
     final static int MAT_SIZE = 100000;
@@ -27,7 +21,7 @@ public class Foothill
         System.out.println();
         mat.clear();
         mat.showSubSquare(0, 12);
-        System.out.println();
+        //System.out.println();
 
         /*SparseMat<Double> mat2 = (SparseMat<Double>)mat.clone();
 
