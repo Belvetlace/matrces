@@ -1,6 +1,8 @@
 import cs_1c.FHarrayList;
 import cs_1c.FHlinkedList;
 
+import java.util.Iterator;
+
 public class SparseMat<E> implements Cloneable
 {
     protected int numRows, numCols;
@@ -41,7 +43,7 @@ public class SparseMat<E> implements Cloneable
         }
     }
 
-    //  places x in row r and column c if x is not default
+    // places x in row r and column c if x is not default
     // if x is the default value it will remove any existing node
     // returns false without an exception if bounds are violated
     public boolean set(int r, int c, E x)
@@ -51,15 +53,29 @@ public class SparseMat<E> implements Cloneable
         // check if row is empty
         if ( rows.get(r).isEmpty() && x == defaultVal ) { return true; }
         // todo: check if col is empty
-        if (rows.get(r).size() < c && x == defaultVal) { return true; }
-        if ( x == defaultVal ) { // not empty
-            rows.get(r).remove(c); // assuming c is index hopefully
-        }
-        try
+        // iterate through linked list
+        Iterator iter = rows.get(r).iterator();
+        while (iter.hasNext())
         {
-            rows.get(r).set(c, new MatNode(c, x)); // sets it if x is not default
-        } catch (IndexOutOfBoundsException e){
-            return false;
+            if (c == rows.get(r).iterator().next().getCol()) // col exists and
+            {
+                if ( x == defaultVal ) {
+                    iter.remove();
+                }
+                else { // set new value
+                    try
+                    {
+                        rows.get(r).set(c, new MatNode(c, x)); // sets it if x is not default
+                    } catch (IndexOutOfBoundsException e){
+                        return false;
+                    }
+                }
+                return true;
+            } else { // col does not exist
+                if(x != defaultVal){
+                    rows.get(r).add(new MatNode(c, x));
+                }
+            }
         }
         return true;
     }
