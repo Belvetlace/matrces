@@ -49,7 +49,7 @@ public class SparseMat<E> implements Cloneable
     public boolean set(int r, int c, E x)
     {
         // check the bounds
-        if (r < 1 || r >= numRows || c < 1 || c >= numCols){ return false; }
+        if (r < 0 || r > numRows || c < 0 || c > numCols){ return false; }
         // check if row is empty
         if (rows.get(r).isEmpty())
         {
@@ -58,10 +58,11 @@ public class SparseMat<E> implements Cloneable
         }
 
         // todo: check if col exists
-        Iterator iter = rows.get(r).iterator();
+        Iterator<MatNode> iter = rows.get(r).iterator();
         while (iter.hasNext())
         {
-            if (c == rows.get(r).iterator().next().getCol()) // col exists and
+            MatNode<E> temp = iter.next();
+            if (c == temp.getCol()) // col exists and
             {
                 if ( x == defaultVal ) {
                     iter.remove();
@@ -89,11 +90,41 @@ public class SparseMat<E> implements Cloneable
     // it will show the rows from start to start + size -1
     // and the columns from start to start + size - 1.
     public void showSubSquare(int start, int size) {
-        for (int j = start; j < (start+size-1); j++) {
-            System.out.println(rows.get(j));
-            for (int i = start; i < (start+size-1); i++) {
-                if (rows.get(i).iterator().hasNext()) {
-                    System.out.println(rows.get(i).iterator().next().getData());
+        Iterator<MatNode> iter;
+        int msize = (start+size-1);
+        for (int j = start; j < msize; j++) {
+            iter = rows.get(j).iterator();
+            if (rows.get(j).isEmpty()){
+                for (int i = start; i < msize; i++)
+                {
+                    System.out.print(defaultVal + " ");
+                }
+                System.out.println();
+            } else {
+                while (iter.hasNext()){
+                    MatNode<E> temp = iter.next();
+                    for(int q = 0; q < temp.getCol(); q++)
+                    {
+                        System.out.print(defaultVal + " ");
+                    }
+                    System.out.print(temp.getData() + " ");
+                    for(int q = 0; q < (msize-temp.getCol()-1); q++)
+                    {
+                        System.out.print(defaultVal + " ");
+                    }
+                }
+                System.out.println();
+            }
+
+
+
+            for (int i = start; i < msize; i++) {
+                if (iter.hasNext())
+                {
+                    System.out.println(iter.next().getData());
+                    System.out.print("0.0 ");
+                }
+                else{
                 }
             }
         }
