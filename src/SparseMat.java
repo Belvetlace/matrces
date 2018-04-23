@@ -134,8 +134,9 @@ public class SparseMat<E> implements Cloneable
     // (leaves the matrix size unchanged).
     public void clear()
     {
-
+        set(numRows,numCols,defaultVal);
     }
+
     @Override
     protected Object clone() throws CloneNotSupportedException
     {
