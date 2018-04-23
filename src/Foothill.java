@@ -25,6 +25,9 @@ public class Foothill
         }
         mat.showSubSquare(0, 12);
         System.out.println();
+        mat.clear();
+        mat.showSubSquare(0, 12);
+        System.out.println();
 
         /*SparseMat<Double> mat2 = (SparseMat<Double>)mat.clone();
 
