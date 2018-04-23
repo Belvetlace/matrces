@@ -68,10 +68,15 @@ public class SparseMat<E> implements Cloneable
     // at (start, start) and whose size is size x size.
     // it will show the rows from start to start + size -1
     // and the columns from start to start + size - 1.
-    public void showSubSquare(int start, int size)
-    {
-        //find start row ]
-        // find start col
+    public void showSubSquare(int start, int size) {
+        for (int j = start; j < (start+size-1); j++) {
+            System.out.println(rows.get(j));
+            for (int i = start; i < (start+size-1); i++) {
+                if (rows.get(i).iterator().hasNext()) {
+                    System.out.println(rows.get(i).iterator().next().getData());
+                }
+            }
+        }
     }
 
     // clears all the rows, effectively setting all values to the defaultVal
