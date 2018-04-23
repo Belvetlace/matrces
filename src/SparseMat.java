@@ -7,6 +7,7 @@ public class SparseMat<E> implements Cloneable
     protected E defaultVal;
     protected FHarrayList<FHlinkedList< MatNode >> rows;
 
+    //row size and column size both >= 1
     public SparseMat(int numRows, int numCols, E defaultVal)
     {
         this.numRows = numRows;
@@ -28,25 +29,49 @@ public class SparseMat<E> implements Cloneable
 
     // returns the object stored in row r and column c.
     // throws an IndexOutOfBoundsException if matrix bounds (row and/or column) are violated.
-    E get(int r, int c) throws IndexOutOfBoundsException
+    public E get(int r, int c) throws IndexOutOfBoundsException
     {
-
-        return null;
+        if (r < 1 || r >= numRows || c < 1 || c >= numCols)
+        { throw new IndexOutOfBoundsException(); }
+        if (rows.get(r).isEmpty())
+        {
+            return null;
+        } else {
+            return (E)rows.get(r).get(c).getData();
+        }
     }
 
     //  places x in row r and column c if x is not default
     // if x is the default value it will remove any existing node
     // returns false without an exception if bounds are violated
-    public boolean set(int row, int column, E value)
+    public boolean set(int r, int c, E x)
     {
+        // check the bounds
+        if (r < 1 || r >= numRows || c < 1 || c >= numCols){ return false; }
+        // check if row is empty
+        if ( rows.get(r).isEmpty() && x == defaultVal ) { return true; }
+        // todo: check if col is empty
+        if (rows.get(r).size() < c && x == defaultVal) { return true; }
+        if ( x == defaultVal ) { // not empty
+            rows.get(r).remove(c); // assuming c is index hopefully
+        }
+        try
+        {
+            rows.get(r).set(c, new MatNode(c, x)); // sets it if x is not default
+        } catch (IndexOutOfBoundsException e){
+            return false;
+        }
         return true;
     }
 
-    // a display method that will show a square sub-matrix anchored at (start, start) and whose size is size x size.
-    // it will show the rows from start to start + size -1 and the columns from start to start + size - 1.
+    // a display method that will show a square sub-matrix anchored
+    // at (start, start) and whose size is size x size.
+    // it will show the rows from start to start + size -1
+    // and the columns from start to start + size - 1.
     public void showSubSquare(int start, int size)
     {
-
+        //find start row ]
+        // find start col
     }
 
     // clears all the rows, effectively setting all values to the defaultVal
@@ -77,6 +102,16 @@ public class SparseMat<E> implements Cloneable
         {
             col = cl;
             data = dt;
+        }
+
+        E getData()
+        {
+            return data;
+        }
+
+        int getCol()
+        {
+            return col;
         }
 
         public Object clone() throws CloneNotSupportedException
