@@ -51,9 +51,13 @@ public class SparseMat<E> implements Cloneable
         // check the bounds
         if (r < 1 || r >= numRows || c < 1 || c >= numCols){ return false; }
         // check if row is empty
-        if ( rows.get(r).isEmpty() && x == defaultVal ) { return true; }
-        // todo: check if col is empty
-        // iterate through linked list
+        if (rows.get(r).isEmpty())
+        {
+            if ( x == defaultVal ) { return true; }
+            else { rows.get(r).add(new MatNode(c, x)); }
+        }
+
+        // todo: check if col exists
         Iterator iter = rows.get(r).iterator();
         while (iter.hasNext())
         {
