@@ -33,14 +33,25 @@ public class SparseMat<E> implements Cloneable
     // throws an IndexOutOfBoundsException if matrix bounds (row and/or column) are violated.
     public E get(int r, int c) throws IndexOutOfBoundsException
     {
-        if (r < 0 || r > numRows || c < 0 || c > numCols)
+        if (r < 0 || r >= numRows || c < 0 || c >= numCols)
         { throw new IndexOutOfBoundsException(); }
-        if (rows.get(r).isEmpty())
+
+        FHlinkedList<MatNode> matNodes = rows.get(r);
+        if (!matNodes.isEmpty())
         {
-            return null;
-        } else {
-            return (E)rows.get(r).get(c).getData();
+            Iterator<MatNode> iter = matNodes.iterator();
+            MatNode<E> temp;
+            while (iter.hasNext())
+            {
+                temp = iter.next();
+                if (c == temp.getCol())
+                {
+                    return temp.getData();
+                }
+            }
         }
+        return defaultVal;
+
     }
 
     // places x in row r and column c if x is not default
@@ -49,7 +60,7 @@ public class SparseMat<E> implements Cloneable
     public boolean set(int r, int c, E x)
     {
         // check the bounds
-        if (r < 0 || r > numRows || c < 0 || c > numCols){ return false; }
+        if (r < 0 || r >= numRows || c < 0 || c >= numCols){ return false; }
         // check if row is empty
         FHlinkedList<MatNode> matNodes = rows.get(r);
         if (matNodes.isEmpty())
@@ -62,9 +73,15 @@ public class SparseMat<E> implements Cloneable
 
         Iterator<MatNode> iter = matNodes.iterator();
         boolean colunmExist = false;
+        MatNode<E> temp = null;
         while (iter.hasNext())
         {
-            if (c == iter.next().getCol()){ colunmExist = true; }
+            temp = iter.next();
+            if (c == temp.getCol())
+            {
+                colunmExist = true;
+                break;
+            }
         }
         if (colunmExist)
         {
@@ -72,17 +89,29 @@ public class SparseMat<E> implements Cloneable
                 iter.remove();
                 return true;
             }
-            //set new value
+            //override value
             try{
-                matNodes.set(c-1, new MatNode(c, x)); // sets it if x is not default
+                matNodes.set(matNodes.indexOf(temp), new MatNode(c, x));
                 return true;
             } catch (IndexOutOfBoundsException e){
                 return false;
             }
-        } else { // col does not exist //todo: put them in order
+        } else { // col does not exist
             if(!x.equals( defaultVal )){
-                matNodes.add(new MatNode(c, x));
-                return true;
+                iter = matNodes.iterator();
+                while (iter.hasNext())
+                {
+                    temp = iter.next();
+                    if(temp.getCol() > c)
+                    {
+                        matNodes.add(matNodes.indexOf(temp), new MatNode(c, x));
+                        return true;
+                    }
+                    else {
+                        matNodes.add(new MatNode(c, x));
+                        return true;
+                    }
+                }
             }
         }
         return true;
@@ -93,13 +122,14 @@ public class SparseMat<E> implements Cloneable
         Iterator<MatNode> iter;
         int msize = (start+size);
         //check start for bounds
-        System.out.println(String.format("start %d msize %d", start, msize));
+        //System.out.println(String.format("start %d msize %d", start, msize));
         if (start < 0 || start > numRows || start > numCols
                 || msize > numCols || msize > numRows)
         {
             System.out.println("start or size out of range");
             return;
         }
+
 
         for (int j = start; j < msize; j++)
         {
@@ -109,7 +139,7 @@ public class SparseMat<E> implements Cloneable
             {
                 for (int i = start; i < msize; i++)
                 {
-                    rStr.append(String.format("%5.1f ", defaultVal));
+                    rStr.append(String.format("%6.1f", defaultVal));
                 }
             } else {
                 int q = 0;
@@ -118,15 +148,15 @@ public class SparseMat<E> implements Cloneable
                     MatNode<E> temp = iter.next();
                     while(q < temp.getCol())
                     {
-                        rStr.append(String.format("%5.1f ", defaultVal));
+                        rStr.append(String.format("%6.1f", defaultVal));
                         q++;
                     }
-                    rStr.append(String.format("%5.1f ", temp.getData()));
+                    rStr.append(String.format("%6.1f", temp.getData()));
                     q++;
                 }
                 if (q < msize){
                     while (q < msize){
-                        rStr.append(String.format("%5.1f ", defaultVal));
+                        rStr.append(String.format("%6.1f", defaultVal));
                         q++;
                     }
                 }
