@@ -36,5 +36,17 @@ public class Foothill
         System.out.println();
         mat2.showSubSquare(0, 12);
 
+
+        final int startOfChanges = 7;
+        final int sizeOfChanges = 10;
+        for ( k = 7; k < 7 + 10; k++)
+        {
+            mat2.set(k, k, k * 1.);
+            mat2.set(7, k, k * 10.);
+            mat2.set(k, 7, -k * 10.);
+        }
+        System.out.println();
+        mat2.showSubSquare(7, 10);
+
     }
 }

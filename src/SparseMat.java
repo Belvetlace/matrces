@@ -57,7 +57,6 @@ public class SparseMat<E> implements Cloneable
         return defaultVal;
 
     }
-
     // places x in row r and column c if x is not default
     // if x is the default value it will remove any existing node
     // returns false without an exception if bounds are violated
@@ -93,14 +92,14 @@ public class SparseMat<E> implements Cloneable
                 iter.remove();
                 return true;
             }
-            //override value
+            //set new value
             try{
                 matNodes.set(matNodes.indexOf(temp), new MatNode(c, x));
                 return true;
             } catch (IndexOutOfBoundsException e){
                 return false;
             }
-        } else { // col does not exist
+        } else {
             if(!x.equals( defaultVal )){
                 iter = matNodes.iterator();
                 if (iter.hasNext())
@@ -127,6 +126,7 @@ public class SparseMat<E> implements Cloneable
         int msize = (start+size);
         //check start for bounds
         //System.out.println(String.format("start %d msize %d", start, msize));
+
         if (start < 0 || start > numRows || start > numCols
                 || msize > numCols || msize > numRows)
         {
@@ -134,10 +134,10 @@ public class SparseMat<E> implements Cloneable
             return;
         }
 
-
         for (int j = start; j < msize; j++)
         {
             StringBuilder rStr = new StringBuilder();
+            //rStr.append("\n");
             iter = rows.get(j).iterator();
             if (rows.get(j).isEmpty())
             {
@@ -146,7 +146,8 @@ public class SparseMat<E> implements Cloneable
                     rStr.append(String.format("%6.1f", defaultVal));
                 }
             } else {
-                int q = 0;
+                int q = start;
+
                 while (iter.hasNext())
                 {
                     MatNode<E> temp = iter.next();
@@ -186,18 +187,13 @@ public class SparseMat<E> implements Cloneable
     @Override
     protected Object clone() throws CloneNotSupportedException
     {
-        //protected int numRows, numCols;
-        //protected E defaultVal;
-        //protected FHarrayList<FHlinkedList< MatNode >> rows;
         SparseMat<MatNode> newObject = (SparseMat<MatNode>)super.clone();
         newObject.rows = (FHarrayList<FHlinkedList< MatNode >>)rows.clone();
-
         for(int i = 0; i< numRows; i ++)
         {
             newObject.rows.set(i,(FHlinkedList<MatNode>)rows.get(i).clone());
         }
         return newObject;
-
     }
 
     public int getRowSize()
@@ -244,13 +240,11 @@ public class SparseMat<E> implements Cloneable
 
         public Object clone() throws CloneNotSupportedException
         {
-            MatNode newObject = new MatNode();
-            newObject.data = this.data;
-            newObject.col = this.col;
-            return newObject;
+            // shallow copy
+            MatNode newObject = (MatNode)super.clone();
+            return (Object) newObject;
         }
     }
+
+
 }
-
-
-
