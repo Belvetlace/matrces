@@ -88,15 +88,12 @@ public class SparseMat<E> implements Cloneable
         return true;
     }
 
-    // a display method that will show a square sub-matrix anchored
-    // at (start, start) and whose size is size x size.
-    // it will show the rows from start to start + size -1
-    // and the columns from start to start + size - 1.
+
     public void showSubSquare(int start, int size) {
         Iterator<MatNode> iter;
-        int msize = (start+size-1);
+        int msize = (start+size);
         //check start for bounds
-        //System.out.println(String.format("start %d msize %d", start, msize));
+        System.out.println(String.format("start %d msize %d", start, msize));
         if (start < 0 || start > numRows || start > numCols
                 || msize > numCols || msize > numRows)
         {
@@ -106,30 +103,35 @@ public class SparseMat<E> implements Cloneable
 
         for (int j = start; j < msize; j++)
         {
+            StringBuilder rStr = new StringBuilder();
             iter = rows.get(j).iterator();
             if (rows.get(j).isEmpty())
             {
                 for (int i = start; i < msize; i++)
                 {
-                    System.out.print(defaultVal + " ");
+                    rStr.append(String.format("%5.1f ", defaultVal));
                 }
-                System.out.println();
             } else {
+                int q = 0;
                 while (iter.hasNext())
                 {
                     MatNode<E> temp = iter.next();
-                    for(int q = 0; q < temp.getCol(); q++)
+                    while(q < temp.getCol())
                     {
-                        System.out.print(defaultVal + " ");
+                        rStr.append(String.format("%5.1f ", defaultVal));
+                        q++;
                     }
-                    System.out.print(temp.getData() + " ");
-                    for(int q = 0; q < (msize-temp.getCol()-1); q++)
-                    {
-                        System.out.print(defaultVal + " ");
+                    rStr.append(String.format("%5.1f ", temp.getData()));
+                    q++;
+                }
+                if (q < msize){
+                    while (q < msize){
+                        rStr.append(String.format("%5.1f ", defaultVal));
+                        q++;
                     }
                 }
-                System.out.println();
             }
+            System.out.println(rStr);
         }
     }
 
