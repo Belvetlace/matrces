@@ -54,35 +54,35 @@ public class SparseMat<E> implements Cloneable
         FHlinkedList<MatNode> matNodes = rows.get(r);
         if (matNodes.isEmpty())
         {
-            if ( x != defaultVal ) {
+            if ( !x.equals( defaultVal )) {
                 matNodes.add(new MatNode(c, x));
             }
             return true;
         }
 
         Iterator<MatNode> iter = matNodes.iterator();
+        boolean colunmExist = false;
         while (iter.hasNext())
         {
-            MatNode<E> temp = iter.next();
-            if (c == temp.getCol()) // col exists and
-            {
-                if ( x == defaultVal ) {
-                    iter.remove();
-                    return true;
-                }
-                 //set new value
-                try{
-                    matNodes.set(c, new MatNode(c, x)); // sets it if x is not default
-                    return true;
-                } catch (IndexOutOfBoundsException e){
-                    return false;
-                }
-
-            } else { // col does not exist //todo: put them in order
-                if(x != defaultVal){
-                    matNodes.add(new MatNode(c, x));
-                    return true;
-                }
+            if (c == iter.next().getCol()){ colunmExist = true; }
+        }
+        if (colunmExist)
+        {
+            if ( x.equals( defaultVal) ) {
+                iter.remove();
+                return true;
+            }
+            //set new value
+            try{
+                matNodes.set(c-1, new MatNode(c, x)); // sets it if x is not default
+                return true;
+            } catch (IndexOutOfBoundsException e){
+                return false;
+            }
+        } else { // col does not exist //todo: put them in order
+            if(!x.equals( defaultVal )){
+                matNodes.add(new MatNode(c, x));
+                return true;
             }
         }
         return true;
