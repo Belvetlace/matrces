@@ -14,14 +14,14 @@ public class Foothill
         for (k = 0; k < 10; k++)
         {
             mat.set(k, k, k*1.);
-            //mat.set(4, k, k*10.);
-            //mat.set(k, 4, -k*10.);
+            mat.set(4, k, k*10.);
+            mat.set(k, 4, -k*10.);
         }
         mat.showSubSquare(0, 12);
         System.out.println();
         mat.clear();
         mat.showSubSquare(0, 12);
-        //System.out.println();
+        System.out.println();
 
         /*SparseMat<Double> mat2 = (SparseMat<Double>)mat.clone();
 
