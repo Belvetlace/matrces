@@ -12,6 +12,10 @@ public class SparseMat<E> implements Cloneable
     //row size and column size both >= 1
     public SparseMat(int numRows, int numCols, E defaultVal)
     {
+        if(numRows < 1 || numCols < 1)
+        {
+            throw new IllegalArgumentException();
+        }
         this.numRows = numRows;
         this.numCols = numCols;
         this.defaultVal = defaultVal;
@@ -99,7 +103,7 @@ public class SparseMat<E> implements Cloneable
         } else { // col does not exist
             if(!x.equals( defaultVal )){
                 iter = matNodes.iterator();
-                while (iter.hasNext())
+                if (iter.hasNext())
                 {
                     temp = iter.next();
                     if(temp.getCol() > c)
@@ -161,6 +165,7 @@ public class SparseMat<E> implements Cloneable
                     }
                 }
             }
+            rStr.append(" ");
             System.out.println(rStr);
         }
     }
@@ -181,8 +186,28 @@ public class SparseMat<E> implements Cloneable
     @Override
     protected Object clone() throws CloneNotSupportedException
     {
-        return super.clone();
+        //protected int numRows, numCols;
+        //protected E defaultVal;
+        //protected FHarrayList<FHlinkedList< MatNode >> rows;
+        SparseMat<MatNode> newObject = (SparseMat<MatNode>)super.clone();
+        newObject.rows = (FHarrayList<FHlinkedList< MatNode >>)rows.clone();
 
+        for(int i = 0; i< numRows; i ++)
+        {
+            newObject.rows.set(i,(FHlinkedList<MatNode>)rows.get(i).clone());
+        }
+        return newObject;
+
+    }
+
+    public int getRowSize()
+    {
+        return numRows;
+    }
+
+    public int getColSize()
+    {
+        return numCols;
     }
 
     protected class MatNode<E> implements Cloneable
@@ -219,9 +244,10 @@ public class SparseMat<E> implements Cloneable
 
         public Object clone() throws CloneNotSupportedException
         {
-            // shallow copy
-            MatNode newObject = (MatNode)super.clone();
-            return (Object) newObject;
+            MatNode newObject = new MatNode();
+            newObject.data = this.data;
+            newObject.col = this.col;
+            return newObject;
         }
     }
 }
