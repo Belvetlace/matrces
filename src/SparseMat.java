@@ -8,6 +8,7 @@ public class SparseMat<E> implements Cloneable
     protected int numRows, numCols;
     protected E defaultVal;
     protected FHarrayList<FHlinkedList< MatNode >> rows;
+    private static String lineSeparator = System.getProperty("line.separator");
 
     //row size and column size both >= 1
     public SparseMat(int numRows, int numCols, E defaultVal)
@@ -123,39 +124,46 @@ public class SparseMat<E> implements Cloneable
 
     public void showSubSquare(int start, int size) {
         int msize = (start+size);
-
+        StringBuilder rStr = new StringBuilder();
         if (start < 0 || start > numRows || start > numCols
                 || msize > numCols || msize > numRows)
         {
-            System.out.println("start or size out of range");
+            System.out.print("");
             return;
         }
-
+        if (size == 0) 
+        {
+            System.out.println("");
+            return;
+        }
         for (int r = start; r < msize; r++)
         {
-            StringBuilder rStr = new StringBuilder();
             if (rows.get(r).isEmpty())
             {
                 for (int i = start; i < msize; i++)
                 {
-                    rStr.append(String.format("%6.1f", defaultVal));
+                    rStr.append(String.format("%5.1f", defaultVal));
+                    rStr.append(" ");
                 }
             } else {
                 for (int c = start; c < msize; c++)
                 {
                     try
                     {
-                        rStr.append(String.format("%6.1f", this.get(r, c)));
+                        rStr.append(String.format("%5.1f", this.get(r,c)));
+                        rStr.append(" ");
                     }
                     catch (IndexOutOfBoundsException e)
                     {
-                        rStr.append(String.format("%6.1f", defaultVal));
+                        rStr.append(String.format("%5.1f", defaultVal));
+                        rStr.append(" ");
                     }
                 }
             }
-            rStr.append(" ");
-            System.out.println(rStr);
+            rStr.append(lineSeparator);
         }
+        
+        System.out.println(rStr);
     }
 
     // clears all the rows, effectively setting all values to the defaultVal
