@@ -122,10 +122,7 @@ public class SparseMat<E> implements Cloneable
 
 
     public void showSubSquare(int start, int size) {
-        Iterator<MatNode> iter;
         int msize = (start+size);
-        //check start for bounds
-        //System.out.println(String.format("start %d msize %d", start, msize));
 
         if (start < 0 || start > numRows || start > numCols
                 || msize > numCols || msize > numRows)
@@ -134,35 +131,25 @@ public class SparseMat<E> implements Cloneable
             return;
         }
 
-        for (int j = start; j < msize; j++)
+        for (int r = start; r < msize; r++)
         {
             StringBuilder rStr = new StringBuilder();
-            //rStr.append("\n");
-            iter = rows.get(j).iterator();
-            if (rows.get(j).isEmpty())
+            if (rows.get(r).isEmpty())
             {
                 for (int i = start; i < msize; i++)
                 {
                     rStr.append(String.format("%6.1f", defaultVal));
                 }
             } else {
-                int q = start;
-
-                while (iter.hasNext())
+                for (int c = start; c < msize; c++)
                 {
-                    MatNode<E> temp = iter.next();
-                    while(q < temp.getCol())
+                    try
+                    {
+                        rStr.append(String.format("%6.1f", this.get(r, c)));
+                    }
+                    catch (IndexOutOfBoundsException e)
                     {
                         rStr.append(String.format("%6.1f", defaultVal));
-                        q++;
-                    }
-                    rStr.append(String.format("%6.1f", temp.getData()));
-                    q++;
-                }
-                if (q < msize){
-                    while (q < msize){
-                        rStr.append(String.format("%6.1f", defaultVal));
-                        q++;
                     }
                 }
             }
@@ -245,6 +232,4 @@ public class SparseMat<E> implements Cloneable
             return (Object) newObject;
         }
     }
-
-
 }
