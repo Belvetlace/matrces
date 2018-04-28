@@ -56,9 +56,19 @@ public class Foothill
     //takes two input matrices, and the third a return (reference) product matrix:
     public static void matMult( double[][] matA,  double[][] matB,
                                 double[][] matC)
-
     {
-
+        if (matA.length != matB.length){
+            throw new IllegalArgumentException("answer is not defined");
+        }
+        double temp = .0;
+        for (int rowA = 0; rowA < MAT_SIZE; rowA++){
+            for (int colB = 0; colB < MAT_SIZE; colB++){
+                for (int rowB = 0; rowB < MAT_SIZE; rowB++){
+                    temp += matA[rowA][rowB] * matB[rowB][rowA];
+                }
+                matC [rowA][colB] = temp;
+            }
+        }
     }
 
 
