@@ -1,52 +1,69 @@
-// CIS 1C Assignment #2 
+import java.text.NumberFormat;
+import java.util.Locale;
+import java.util.Random;
 
+//------------------------------------------------------
 public class Foothill
 {
-    final static int MAT_SIZE = 100000;
-    // -------  main --------------
+    final static int MAT_SIZE = 50;
+
+    // -------  proof of correctness --------------
     public static void main(String[] args) throws Exception
     {
-        // 100000 x 100000 filled with 0
-        int k;
-        SparseMat<Double> mat = new SparseMat<Double>(MAT_SIZE, MAT_SIZE, 0.);
+        int r, randRow, randCol;
+        long startTime, stopTime;
+        double randFrac;
+        double smallPercent;
+        NumberFormat tidy = NumberFormat.getInstance(Locale.US);
+        tidy.setMaximumFractionDigits(4);
 
-        // test mutators
-        for (k = 0; k < 10; k++)
+        // non-sparse matrices
+        double[][] mat, matAns;
+
+        // allocate matrices
+        mat = new double[MAT_SIZE][MAT_SIZE];
+        matAns = new double[MAT_SIZE][MAT_SIZE];
+
+        Random rand = new Random();
+
+        // generate small% of non-default values bet 0 and 1
+        smallPercent = MAT_SIZE/10. * MAT_SIZE;
+        for (r = 0; r < smallPercent; r++)
         {
-            mat.set(k, k, k*1.);
-            mat.set(4, k, k*10.);
-            mat.set(k, 4, -k*10.);
-        }
-        mat.showSubSquare(0, 12);
-        System.out.println();
-        //mat.clear();
-        //mat.showSubSquare(0, 12);
-        //System.out.println();
-
-        SparseMat<Double> mat2 = (SparseMat<Double>)mat.clone();
-
-        for (k = 0; k < 10; k++)
-        {
-            mat.set(k, k, 1.);
-            mat.set(4, k, 10.);
-            mat.set(k, 4, -10.);
+            randRow = rand.nextInt(MAT_SIZE);
+            randCol = rand.nextInt(MAT_SIZE);
+            randFrac = Math.random();
+            mat[randRow][randCol] = randFrac;
         }
 
-        mat.showSubSquare(0, 12);
-        System.out.println();
-        mat2.showSubSquare(0, 12);
+        // 10x10 submatrix in lower right
+        matShow(mat, MAT_SIZE - 10, 10);
+
+        startTime = System.nanoTime();
+        matMult(mat, mat, matAns);
+        stopTime = System.nanoTime();
+
+        matShow(matAns, MAT_SIZE - 10, 10);
+
+        System.out.println("\nSize = " + MAT_SIZE + " Mat. Mult. Elapsed Time: "
+                + tidy.format( (stopTime - startTime) / 1e9)
+                + " seconds.");
+    }
+
+    // check that the first rows of each matrix are the same size.
+    // let Java throw exceptions if the client passed bad matrices.
+
+    //takes two input matrices, and the third a return (reference) product matrix:
+    public static void matMult( double[][] matA,  double[][] matB,
+                                double[][] matC)
+
+    {
+
+    }
 
 
-        final int startOfChanges = 7;
-        final int sizeOfChanges = 10;
-        for ( k = 7; k < 7 + 10; k++)
-        {
-            mat2.set(k, k, k * 1.);
-            mat2.set(7, k, k * 10.);
-            mat2.set(k, 7, -k * 10.);
-        }
-        System.out.println();
-        mat2.showSubSquare(7, 10);
+    public static void matShow(double[][] matA, int start, int size)
+    {
 
     }
 }
