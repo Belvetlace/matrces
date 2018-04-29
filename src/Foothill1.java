@@ -1,55 +1,53 @@
-public class Foothill
+import java.text.NumberFormat;
+import java.util.Locale;
+import java.util.Random;
+
+//------------------------------------------------------
+public class Foothill1
 {
-    final static int MAT_SIZE = 5;
+    final static int MAT_SIZE = 500;
 
     // -------  proof of correctness --------------
     public static void main(String[] args) throws Exception
     {
-        int row, col;
+        int r, randRow, randCol;
+        long startTime, stopTime;
+        double randFrac;
+        double smallPercent;
+        NumberFormat tidy = NumberFormat.getInstance(Locale.US);
+        tidy.setMaximumFractionDigits(4);
 
         // non-sparse matrices
-        double[][] matAns = new double[MAT_SIZE][MAT_SIZE];
-        double[][]
-                mat1 =
-                {
-                        {1, 2, 3, 4, 5},
-                        {-1, -2, -3, -4, -5},
-                        {1, 3, 1, 3, 1},
-                        {0, 1, 0, 1, 0},
-                        {-1, -1, -1, -1, -1}
-                };
-        double[][] mat2 =
-                {
-                        {2, 1, 5, 0, 2},
-                        {1, 4, 3, 2, 7},
-                        {4, 4, 4, 4, 4},
-                        {7, 1, -1, -1, -1},
-                        {0, 0, 8, -1, -6}
-                };
+        double[][] mat, matAns;
 
-        matShow(mat1, 0, 5);
-        matShow(mat2, 0, 5);
-        matMult(mat1, mat2, matAns);
+        // allocate matrices
+        mat = new double[MAT_SIZE][MAT_SIZE];
+        matAns = new double[MAT_SIZE][MAT_SIZE];
 
-        matShow(matAns, 0, 5);
+        Random rand = new Random();
 
-        // sparse matrices
-        SparseMatWMult mSparseMat, nSparseMat, matAnsS;
-        mSparseMat = new SparseMatWMult(MAT_SIZE, MAT_SIZE);
-        nSparseMat = new SparseMatWMult(MAT_SIZE, MAT_SIZE);
-        matAnsS = new SparseMatWMult(MAT_SIZE, MAT_SIZE);
+        // generate small% of non-default values bet 0 and 1
+        smallPercent = MAT_SIZE/10. * MAT_SIZE;
+        for (r = 0; r < smallPercent; r++)
+        {
+            randRow = rand.nextInt(MAT_SIZE);
+            randCol = rand.nextInt(MAT_SIZE);
+            randFrac = Math.random();
+            mat[randRow][randCol] = randFrac;
+        }
 
-        for (row = 0; row < MAT_SIZE; row++)
-            for (col = 0; col < MAT_SIZE; col++)
-            {
-                mSparseMat.set(row, col, mat1[row][col]);
-                nSparseMat.set(row, col, mat2[row][col]);
-            }
-        matAnsS.matMult(mSparseMat, nSparseMat);
+        // 10x10 submatrix in lower right
+        matShow(mat, MAT_SIZE - 10, 10);
 
-        mSparseMat.showSubSquare(0, 5);
-        nSparseMat.showSubSquare(0, 5);
-        matAnsS.showSubSquare(0, 5);
+        startTime = System.nanoTime();
+        matMult(mat, mat, matAns);
+        stopTime = System.nanoTime();
+
+        matShow(matAns, MAT_SIZE - 10, 10);
+
+        System.out.println("\nSize = " + MAT_SIZE + " Mat. Mult. Elapsed Time: "
+                + tidy.format( (stopTime - startTime) / 1e9)
+                + " seconds.");
     }
 
     // check that the first rows of each matrix are the same size.
@@ -59,10 +57,10 @@ public class Foothill
     public static void matMult( double[][] matA,  double[][] matB,
                                 double[][] matC)
     {
-        if (matA.length != matB.length || matA.length == 0){
+        if (matA.length != matB.length){
             throw new IllegalArgumentException("answer is not defined");
         }
-        double temp = .0;
+        double temp;
         for (int rowA = 0; rowA < MAT_SIZE; rowA++){
             for (int colB = 0; colB < MAT_SIZE; colB++){
                 temp = .0;
@@ -75,7 +73,7 @@ public class Foothill
     }
 
     public static void matMult2( double[][] matA,  double[][] matB,
-                                 double[][] matC)
+                                double[][] matC)
     {
         for (int i = 0; i < matA.length; i++)
         {
@@ -113,3 +111,10 @@ public class Foothill
         System.out.println(rStr);
     }
 }
+/*
+Size = 50  Mat. Mult. Elapsed Time: 0.0032 seconds.
+Size = 100 Mat. Mult. Elapsed Time: 0.0099 seconds.
+Size = 200 Mat. Mult. Elapsed Time: 0.0318 seconds.
+Size = 400 Mat. Mult. Elapsed Time: 0.2544 seconds.
+Size = 800 Mat. Mult. Elapsed Time: 7.0093 seconds.
+ */
