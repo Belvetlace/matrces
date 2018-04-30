@@ -114,5 +114,9 @@ public class Foothill1
     }
 }
 /*
-
+Size = 50  Mat. Mult. Elapsed Time: 0.0032 seconds.
+Size = 100 Mat. Mult. Elapsed Time: 0.0099 seconds.
+Size = 200 Mat. Mult. Elapsed Time: 0.0318 seconds.
+Size = 400 Mat. Mult. Elapsed Time: 0.2544 seconds.
+Size = 800 Mat. Mult. Elapsed Time: 7.0093 seconds.
  */

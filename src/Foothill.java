@@ -1,3 +1,6 @@
+import java.text.NumberFormat;
+import java.util.Locale;
+
 public class Foothill
 {
     final static int MAT_SIZE = 5;
@@ -6,6 +9,9 @@ public class Foothill
     public static void main(String[] args) throws Exception
     {
         int row, col;
+        long startTime, stopTime;
+        NumberFormat tidy = NumberFormat.getInstance(Locale.US);
+        tidy.setMaximumFractionDigits(4);
 
         // non-sparse matrices
         double[][] matAns = new double[MAT_SIZE][MAT_SIZE];
@@ -45,11 +51,19 @@ public class Foothill
                 mSparseMat.set(row, col, mat1[row][col]);
                 nSparseMat.set(row, col, mat2[row][col]);
             }
+
+        startTime = System.nanoTime();
         matAnsS.matMult(mSparseMat, nSparseMat);
+        stopTime = System.nanoTime();
 
         mSparseMat.showSubSquare(0, 5);
         nSparseMat.showSubSquare(0, 5);
         matAnsS.showSubSquare(0, 5);
+
+        System.out.println("\nSize = " + MAT_SIZE + " Mat. Mult. Elapsed Time: "
+                + tidy.format( (stopTime - startTime) / 1e9)
+                + " seconds.");
+
     }
 
     // check that the first rows of each matrix are the same size.
