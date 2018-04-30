@@ -100,6 +100,7 @@ public class Foothill
         }
         if (size == 0)
         {
+            System.out.println("");
             throw new IllegalArgumentException("size is 0");
         }
         String lineSeparator = System.getProperty("line.separator");
