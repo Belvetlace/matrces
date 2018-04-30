@@ -62,12 +62,12 @@ public class Foothill
         if (matA.length != matB.length || matA.length == 0){
             throw new IllegalArgumentException("answer is not defined");
         }
-        double temp = .0;
+        double temp;
         for (int rowA = 0; rowA < MAT_SIZE; rowA++){
             for (int colB = 0; colB < MAT_SIZE; colB++){
                 temp = .0;
                 for (int rowB = 0; rowB < MAT_SIZE; rowB++){
-                    temp += matA[rowA][rowB] * matB[rowB][rowA];
+                    temp += matA[rowA][rowB] * matB[rowB][colB];
                 }
                 matC [rowA][colB] = temp;
             }
