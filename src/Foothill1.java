@@ -74,22 +74,6 @@ public class Foothill1
         }
     }
 
-    public static void matMult2( double[][] matA,  double[][] matB,
-                                double[][] matC)
-    {
-        for (int i = 0; i < matA.length; i++)
-        {
-            double temp = (matA[i][i] * matB[i][i]) + (matA[i][i + 1] * matB[i + 1][i]);
-            matC[i][i] = temp;
-            temp = (matA[i][i] * matB[i][i + 1]) + (matA[i][i + 1] * matB[i + 1][i + 1]);
-            matC[i][i + 1] = temp;
-            temp = (matA[i + 1][i] * matB[i][i]) + (matA[i + 1][i + 1] * matB[i + 1][i]);
-            matC[i + 1][i] = temp;
-            temp = (matA[i + 1][i] * matB[i][i + 1]) + (matA[i + 1][i + 1] * matB[i + 1][i + 1]);
-            matC[i + 1][i + 1] = temp;
-        }
-    }
-
     public static void matShow(double[][] matA, int start, int size)
     {
         int msize = (start+size);
