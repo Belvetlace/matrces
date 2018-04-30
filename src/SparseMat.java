@@ -142,7 +142,7 @@ public class SparseMat<E> implements Cloneable
             {
                 for (int i = start; i < msize; i++)
                 {
-                    rStr.append(String.format("%5.1f", defaultVal));
+                    rStr.append(String.format("%5.2f", defaultVal));
                     rStr.append(" ");
                 }
             } else {
@@ -150,12 +150,12 @@ public class SparseMat<E> implements Cloneable
                 {
                     try
                     {
-                        rStr.append(String.format("%5.1f", this.get(r,c)));
+                        rStr.append(String.format("%5.2f", this.get(r,c)));
                         rStr.append(" ");
                     }
                     catch (IndexOutOfBoundsException e)
                     {
-                        rStr.append(String.format("%5.1f", defaultVal));
+                        rStr.append(String.format("%5.2f", defaultVal));
                         rStr.append(" ");
                     }
                 }

@@ -5,7 +5,7 @@ import java.util.Random;
 //------------------------------------------------------
 public class Foothill1
 {
-    final static int MAT_SIZE = 800;
+    final static int MAT_SIZE = 700;
 
     // -------  proof of correctness --------------
     public static void main(String[] args) throws Exception
@@ -32,14 +32,15 @@ public class Foothill1
             randCol = rand.nextInt(MAT_SIZE);
             randFrac = Math.random();
             mSparseMat.set(randRow, randCol, randFrac);
+            nSparseMat.set(randRow, randCol, randFrac);
         }
 
         System.out.println("Sparse matA");
         mSparseMat.showSubSquare(0, 10);
         System.out.println("Sparse matB");
         nSparseMat.showSubSquare(0, 10);
-        System.out.println("Sparse matC empty");
-        matAnsS.showSubSquare(0, 10);
+        //System.out.println("Sparse matC empty");
+        //matAnsS.showSubSquare(0, 10);
 
         startTime = System.nanoTime();
         matAnsS.matMult(mSparseMat, nSparseMat);

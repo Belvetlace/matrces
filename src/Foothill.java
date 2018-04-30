@@ -39,6 +39,7 @@ public class Foothill
 
         matShow(matAns, 0, 5);
 
+        System.out.println("Sparse matrices");
         // sparse matrices
         SparseMatWMult mSparseMat, nSparseMat, matAnsS;
         mSparseMat = new SparseMatWMult(MAT_SIZE, MAT_SIZE);
@@ -87,7 +88,6 @@ public class Foothill
             }
         }
     }
-
 
     public static void matShow(double[][] matA, int start, int size)
     {
