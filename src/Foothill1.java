@@ -5,7 +5,8 @@ import java.util.Random;
 //------------------------------------------------------
 public class Foothill1
 {
-    final static int MAT_SIZE = 700;
+    final static int MAT_SIZE = 800;
+    final static int MAT_SIZE_S = 1600;
 
     // -------  proof of correctness --------------
     public static void main(String[] args) throws Exception
@@ -50,15 +51,15 @@ public class Foothill1
 
         // sparse matrices
         SparseMatWMult mSparseMat, nSparseMat, matAnsS;
-        mSparseMat = new SparseMatWMult(MAT_SIZE, MAT_SIZE);
-        nSparseMat = new SparseMatWMult(MAT_SIZE, MAT_SIZE);
-        matAnsS = new SparseMatWMult(MAT_SIZE, MAT_SIZE);
+        mSparseMat = new SparseMatWMult(MAT_SIZE_S, MAT_SIZE_S);
+        nSparseMat = new SparseMatWMult(MAT_SIZE_S, MAT_SIZE_S);
+        matAnsS = new SparseMatWMult(MAT_SIZE_S, MAT_SIZE_S);
 
-        smallPercent = MAT_SIZE/10. * MAT_SIZE;
+        smallPercent = MAT_SIZE_S/100. * MAT_SIZE_S;
         for (r = 0; r < smallPercent; r++)
         {
-            randRow = rand.nextInt(MAT_SIZE);
-            randCol = rand.nextInt(MAT_SIZE);
+            randRow = rand.nextInt(MAT_SIZE_S);
+            randCol = rand.nextInt(MAT_SIZE_S);
             randFrac = Math.random();
             mSparseMat.set(randRow, randCol, randFrac);
             nSparseMat.set(randRow, randCol, randFrac);
@@ -68,8 +69,6 @@ public class Foothill1
         mSparseMat.showSubSquare(0, 10);
         System.out.println("Sparse matB");
         nSparseMat.showSubSquare(0, 10);
-        //System.out.println("Sparse matC empty");
-        //matAnsS.showSubSquare(0, 10);
 
         startTime = System.nanoTime();
         matAnsS.matMult(mSparseMat, nSparseMat);
@@ -78,7 +77,7 @@ public class Foothill1
         System.out.println("Sparse matC result");
         matAnsS.showSubSquare(0, 10);
 
-        System.out.println("\nSize = " + MAT_SIZE + " Mat. Mult. Elapsed Time: "
+        System.out.println("\nSize = " + MAT_SIZE_S + " Mat. Mult. Elapsed Time: "
                 + tidy.format( (stopTime - startTime) / 1e9)
                 + " seconds.");
     }
@@ -93,10 +92,10 @@ public class Foothill1
             throw new IllegalArgumentException("answer is not defined");
         }
         double temp;
-        for (int rowA = 0; rowA < MAT_SIZE; rowA++){
-            for (int colB = 0; colB < MAT_SIZE; colB++){
+        for (int rowA = 0; rowA < matA.length; rowA++){
+            for (int colB = 0; colB < matA.length; colB++){
                 temp = .0;
-                for (int rowB = 0; rowB < MAT_SIZE; rowB++){
+                for (int rowB = 0; rowB < matA.length; rowB++){
                     temp += matA[rowA][rowB] * matB[rowB][colB];
                 }
                 matC [rowA][colB] = temp;
@@ -107,8 +106,7 @@ public class Foothill1
     public static void matShow(double[][] matA, int start, int size)
     {
         int msize = (start+size);
-        //check for bounds
-        if (start < 0 || start > MAT_SIZE || msize > MAT_SIZE )
+        if (start < 0 || start > matA.length || msize > matA.length )
         {
             throw new IllegalArgumentException("out of bounds");
         }

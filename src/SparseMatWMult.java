@@ -6,18 +6,11 @@ import java.util.Iterator;
 class SparseMatWMult extends SparseMat<Double>
 {
 
-
     public SparseMatWMult(int numRows, int numCols)
     {
         super(numRows, numCols, .0);
     }
 
-
-    // sets the this object to the product of the passed parameters
-    // It does full error testing for dimension compatibility,
-    // and insists that the matrices all have sizes 1×1 or larger.
-    // It returns false if any of this fails.
-    // Otherwise, it does the multiplication and returns true.
     public boolean matMult(SparseMatWMult matA, SparseMatWMult matB)
     {
         if(matA.rows.isEmpty() || matB.rows.isEmpty()
@@ -37,7 +30,6 @@ class SparseMatWMult extends SparseMat<Double>
         {
             FHlinkedList<MatNode> matNodesA = matA.rows.get(rowA);
             if (!matNodesA.isEmpty()){
-                // todo: check for identity matrix later
                 for (int colB = 0; colB < numCols; colB++)
                 {
                     iter = matNodesA.iterator();
