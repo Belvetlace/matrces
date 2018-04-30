@@ -18,6 +18,35 @@ public class Foothill1
         tidy.setMaximumFractionDigits(4);
 
         Random rand = new Random();
+        // non-sparse matrices
+        double[][] mat, matAns;
+
+        // allocate matrices
+        mat = new double[MAT_SIZE][MAT_SIZE];
+        matAns = new double[MAT_SIZE][MAT_SIZE];
+
+        // generate small% of non-default values bet 0 and 1
+        smallPercent = MAT_SIZE/10. * MAT_SIZE;
+        for (r = 0; r < smallPercent; r++)
+        {
+            randRow = rand.nextInt(MAT_SIZE);
+            randCol = rand.nextInt(MAT_SIZE);
+            randFrac = Math.random();
+            mat[randRow][randCol] = randFrac;
+        }
+
+        // 10x10 submatrix in lower right
+        matShow(mat, MAT_SIZE - 10, 10);
+
+        startTime = System.nanoTime();
+        matMult(mat, mat, matAns);
+        stopTime = System.nanoTime();
+
+        matShow(matAns, MAT_SIZE - 10, 10);
+
+        System.out.println("\nSize = " + MAT_SIZE + " Mat. Mult. Elapsed Time: "
+                + tidy.format( (stopTime - startTime) / 1e9)
+                + " seconds.\n");
 
         // sparse matrices
         SparseMatWMult mSparseMat, nSparseMat, matAnsS;
