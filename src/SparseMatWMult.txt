@@ -14,7 +14,7 @@ class SparseMatWMult extends SparseMat<Double>
     public boolean matMult(SparseMatWMult matA, SparseMatWMult matB)
     {
         if(matA.rows.isEmpty() || matB.rows.isEmpty()
-                ||matA.getRowSize() != matB.getRowSize()) //size is 0 or different size
+                ||matA.getRowSize() != matB.getRowSize())
         {
             return false;
         }
@@ -43,7 +43,7 @@ class SparseMatWMult extends SparseMat<Double>
                             temp += matB.get(col, colB) * nodeA.getData();
                         } catch (IndexOutOfBoundsException e)
                         {
-                            // value is 0 do nothing
+                            // value is 0, do nothing
                         }
                     }
                     this.set(rowA, colB, temp);
@@ -53,7 +53,7 @@ class SparseMatWMult extends SparseMat<Double>
         return true;
     }
 
-    private void setSize(int numRows, int numCols){
+    private boolean setSize(int numRows, int numCols){
         this.numRows = numRows;
         this.numCols = numCols;
         rows = new FHarrayList<FHlinkedList< MatNode >>(numRows);
@@ -61,5 +61,6 @@ class SparseMatWMult extends SparseMat<Double>
         {
             rows.add(new FHlinkedList<MatNode>());
         }
+        return true;
     }
 }

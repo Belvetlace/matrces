@@ -35,7 +35,7 @@ public class SparseMat<E> implements Cloneable
     }
 
     // returns the object stored in row r and column c.
-    // throws an IndexOutOfBoundsException if matrix bounds (row and/or column) are violated.
+    // throws an IndexOutOfBoundsException if matrix bounds are violated.
     public E get(int r, int c) throws IndexOutOfBoundsException
     {
         if (r < 0 || r >= numRows || c < 0 || c >= numCols)
@@ -223,9 +223,10 @@ public class SparseMat<E> implements Cloneable
             return data;
         }
 
-        void setData(E data)
+        boolean setData(E data)
         {
             this.data = data;
+            return true;
         }
 
         int getCol()
